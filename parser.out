@@ -1,0 +1,48 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DO
+    ELSE
+    ID
+    IF
+    NUMBER
+    PRINT
+    WHILE
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> expression PLUS term
+Rule 2     expression -> expression MINUS term
+Rule 3     expression -> term
+Rule 4     term -> term TIMES factor
+Rule 5     term -> term DIVIDE factor
+Rule 6     term -> factor
+Rule 7     factor -> NUMBE
+Rule 8     factor -> LPAREN expression RPAREN
+
+Terminals, with rules where they appear
+
+DIVIDE               : 5
+DO                   : 
+ELSE                 : 
+ID                   : 
+IF                   : 
+LPAREN               : 8
+MINUS                : 2
+NUMBER               : 
+PLUS                 : 1
+PRINT                : 
+RPAREN               : 8
+TIMES                : 4
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+NUMBE                : 7
+expression           : 1 2 8 0
+factor               : 4 5 6
+term                 : 1 2 3 4 5
+

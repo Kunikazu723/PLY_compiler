@@ -1,0 +1,8 @@
+if -> perguntei?
+else -> fodase?
+= -> receba
+while = nãogrita
+; -> ;
+do -> pedro
+print -> bobesponja
+
