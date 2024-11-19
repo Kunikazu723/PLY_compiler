@@ -1,0 +1,19 @@
+n1 = 2;
+n3 = 5;
+
+perguntei? (n1 > n3) 
+{
+    n1 = n1;
+} 
+emole
+{
+    n3 = 50;
+}
+
+naogrita (n1 > 2) {
+    n2 = 5;
+}
+
+grite {
+    n2 = 5;
+} naogrita (2 < 5);

@@ -1,48 +1,799 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    DO
-    ELSE
-    ID
-    IF
-    NUMBER
-    PRINT
-    WHILE
-
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> expression PLUS term
-Rule 2     expression -> expression MINUS term
-Rule 3     expression -> term
-Rule 4     term -> term TIMES factor
-Rule 5     term -> term DIVIDE factor
-Rule 6     term -> factor
-Rule 7     factor -> NUMBE
-Rule 8     factor -> LPAREN expression RPAREN
+Rule 0     S' -> start
+Rule 1     start -> statement
+Rule 2     start -> start statement
+Rule 3     statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+Rule 4     bool -> term LTHAN term
+Rule 5     bool -> term GTHAN term
+Rule 6     bool -> term LETHAN term
+Rule 7     bool -> term GETHAN term
+Rule 8     statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY
+Rule 9     statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+Rule 10    statement -> ID ATT expression TERMINATOR
+Rule 11    expression -> expression PLUS expression
+Rule 12    expression -> expression MINUS expression
+Rule 13    expression -> expression TIMES expression
+Rule 14    expression -> expression DIVIDE expression
+Rule 15    expression -> LPAREN expression RPAREN
+Rule 16    expression -> term
+Rule 17    term -> NUMBER
+Rule 18    term -> ID
 
 Terminals, with rules where they appear
 
-DIVIDE               : 5
-DO                   : 
-ELSE                 : 
-ID                   : 
-IF                   : 
-LPAREN               : 8
-MINUS                : 2
-NUMBER               : 
-PLUS                 : 1
-PRINT                : 
-RPAREN               : 8
-TIMES                : 4
-WHILE                : 
+ATT                  : 10
+DIVIDE               : 14
+DO                   : 9
+ELSE                 : 3
+GETHAN               : 7
+GTHAN                : 5
+ID                   : 10 18
+IF                   : 3
+LETHAN               : 6
+LKEY                 : 3 3 8 9
+LPAREN               : 3 8 9 15
+LTHAN                : 4
+MINUS                : 12
+NUMBER               : 17
+PLUS                 : 11
+RKEY                 : 3 3 8 9
+RPAREN               : 3 8 9 15
+TERMINATOR           : 9 10
+TIMES                : 13
+WHILE                : 8 9
 error                : 
 
 Nonterminals, with rules where they appear
 
-NUMBE                : 7
-expression           : 1 2 8 0
-factor               : 4 5 6
-term                 : 1 2 3 4 5
+bool                 : 3 8 9
+expression           : 10 11 11 12 12 13 13 14 14 15
+start                : 2 0
+statement            : 1 2 3 3 8 9
+term                 : 4 4 5 5 6 6 7 7 16
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . start
+    (1) start -> . statement
+    (2) start -> . start statement
+    (3) statement -> . IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (8) statement -> . WHILE LPAREN bool RPAREN LKEY statement RKEY
+    (9) statement -> . DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (10) statement -> . ID ATT expression TERMINATOR
+
+    IF              shift and go to state 3
+    WHILE           shift and go to state 4
+    DO              shift and go to state 5
+    ID              shift and go to state 6
+
+    start                          shift and go to state 1
+    statement                      shift and go to state 2
+
+state 1
+
+    (0) S' -> start .
+    (2) start -> start . statement
+    (3) statement -> . IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (8) statement -> . WHILE LPAREN bool RPAREN LKEY statement RKEY
+    (9) statement -> . DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (10) statement -> . ID ATT expression TERMINATOR
+
+    IF              shift and go to state 3
+    WHILE           shift and go to state 4
+    DO              shift and go to state 5
+    ID              shift and go to state 6
+
+    statement                      shift and go to state 7
+
+state 2
+
+    (1) start -> statement .
+
+    IF              reduce using rule 1 (start -> statement .)
+    WHILE           reduce using rule 1 (start -> statement .)
+    DO              reduce using rule 1 (start -> statement .)
+    ID              reduce using rule 1 (start -> statement .)
+    $end            reduce using rule 1 (start -> statement .)
+
+
+state 3
+
+    (3) statement -> IF . LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+
+    LPAREN          shift and go to state 8
+
+
+state 4
+
+    (8) statement -> WHILE . LPAREN bool RPAREN LKEY statement RKEY
+
+    LPAREN          shift and go to state 9
+
+
+state 5
+
+    (9) statement -> DO . LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+
+    LKEY            shift and go to state 10
+
+
+state 6
+
+    (10) statement -> ID . ATT expression TERMINATOR
+
+    ATT             shift and go to state 11
+
+
+state 7
+
+    (2) start -> start statement .
+
+    IF              reduce using rule 2 (start -> start statement .)
+    WHILE           reduce using rule 2 (start -> start statement .)
+    DO              reduce using rule 2 (start -> start statement .)
+    ID              reduce using rule 2 (start -> start statement .)
+    $end            reduce using rule 2 (start -> start statement .)
+
+
+state 8
+
+    (3) statement -> IF LPAREN . bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (4) bool -> . term LTHAN term
+    (5) bool -> . term GTHAN term
+    (6) bool -> . term LETHAN term
+    (7) bool -> . term GETHAN term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    bool                           shift and go to state 12
+    term                           shift and go to state 13
+
+state 9
+
+    (8) statement -> WHILE LPAREN . bool RPAREN LKEY statement RKEY
+    (4) bool -> . term LTHAN term
+    (5) bool -> . term GTHAN term
+    (6) bool -> . term LETHAN term
+    (7) bool -> . term GETHAN term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    bool                           shift and go to state 16
+    term                           shift and go to state 13
+
+state 10
+
+    (9) statement -> DO LKEY . statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (3) statement -> . IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (8) statement -> . WHILE LPAREN bool RPAREN LKEY statement RKEY
+    (9) statement -> . DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (10) statement -> . ID ATT expression TERMINATOR
+
+    IF              shift and go to state 3
+    WHILE           shift and go to state 4
+    DO              shift and go to state 5
+    ID              shift and go to state 6
+
+    statement                      shift and go to state 17
+
+state 11
+
+    (10) statement -> ID ATT . expression TERMINATOR
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . LPAREN expression RPAREN
+    (16) expression -> . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    LPAREN          shift and go to state 19
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 18
+    term                           shift and go to state 20
+
+state 12
+
+    (3) statement -> IF LPAREN bool . RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+
+    RPAREN          shift and go to state 21
+
+
+state 13
+
+    (4) bool -> term . LTHAN term
+    (5) bool -> term . GTHAN term
+    (6) bool -> term . LETHAN term
+    (7) bool -> term . GETHAN term
+
+    LTHAN           shift and go to state 22
+    GTHAN           shift and go to state 23
+    LETHAN          shift and go to state 24
+    GETHAN          shift and go to state 25
+
+
+state 14
+
+    (17) term -> NUMBER .
+
+    LTHAN           reduce using rule 17 (term -> NUMBER .)
+    GTHAN           reduce using rule 17 (term -> NUMBER .)
+    LETHAN          reduce using rule 17 (term -> NUMBER .)
+    GETHAN          reduce using rule 17 (term -> NUMBER .)
+    TERMINATOR      reduce using rule 17 (term -> NUMBER .)
+    PLUS            reduce using rule 17 (term -> NUMBER .)
+    MINUS           reduce using rule 17 (term -> NUMBER .)
+    TIMES           reduce using rule 17 (term -> NUMBER .)
+    DIVIDE          reduce using rule 17 (term -> NUMBER .)
+    RPAREN          reduce using rule 17 (term -> NUMBER .)
+
+
+state 15
+
+    (18) term -> ID .
+
+    LTHAN           reduce using rule 18 (term -> ID .)
+    GTHAN           reduce using rule 18 (term -> ID .)
+    LETHAN          reduce using rule 18 (term -> ID .)
+    GETHAN          reduce using rule 18 (term -> ID .)
+    TERMINATOR      reduce using rule 18 (term -> ID .)
+    PLUS            reduce using rule 18 (term -> ID .)
+    MINUS           reduce using rule 18 (term -> ID .)
+    TIMES           reduce using rule 18 (term -> ID .)
+    DIVIDE          reduce using rule 18 (term -> ID .)
+    RPAREN          reduce using rule 18 (term -> ID .)
+
+
+state 16
+
+    (8) statement -> WHILE LPAREN bool . RPAREN LKEY statement RKEY
+
+    RPAREN          shift and go to state 26
+
+
+state 17
+
+    (9) statement -> DO LKEY statement . RKEY WHILE LPAREN bool RPAREN TERMINATOR
+
+    RKEY            shift and go to state 27
+
+
+state 18
+
+    (10) statement -> ID ATT expression . TERMINATOR
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+
+    TERMINATOR      shift and go to state 28
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+
+state 19
+
+    (15) expression -> LPAREN . expression RPAREN
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . LPAREN expression RPAREN
+    (16) expression -> . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    LPAREN          shift and go to state 19
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 33
+    term                           shift and go to state 20
+
+state 20
+
+    (16) expression -> term .
+
+    TERMINATOR      reduce using rule 16 (expression -> term .)
+    PLUS            reduce using rule 16 (expression -> term .)
+    MINUS           reduce using rule 16 (expression -> term .)
+    TIMES           reduce using rule 16 (expression -> term .)
+    DIVIDE          reduce using rule 16 (expression -> term .)
+    RPAREN          reduce using rule 16 (expression -> term .)
+
+
+state 21
+
+    (3) statement -> IF LPAREN bool RPAREN . LKEY statement RKEY ELSE LKEY statement RKEY
+
+    LKEY            shift and go to state 34
+
+
+state 22
+
+    (4) bool -> term LTHAN . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    term                           shift and go to state 35
+
+state 23
+
+    (5) bool -> term GTHAN . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    term                           shift and go to state 36
+
+state 24
+
+    (6) bool -> term LETHAN . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    term                           shift and go to state 37
+
+state 25
+
+    (7) bool -> term GETHAN . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    term                           shift and go to state 38
+
+state 26
+
+    (8) statement -> WHILE LPAREN bool RPAREN . LKEY statement RKEY
+
+    LKEY            shift and go to state 39
+
+
+state 27
+
+    (9) statement -> DO LKEY statement RKEY . WHILE LPAREN bool RPAREN TERMINATOR
+
+    WHILE           shift and go to state 40
+
+
+state 28
+
+    (10) statement -> ID ATT expression TERMINATOR .
+
+    IF              reduce using rule 10 (statement -> ID ATT expression TERMINATOR .)
+    WHILE           reduce using rule 10 (statement -> ID ATT expression TERMINATOR .)
+    DO              reduce using rule 10 (statement -> ID ATT expression TERMINATOR .)
+    ID              reduce using rule 10 (statement -> ID ATT expression TERMINATOR .)
+    $end            reduce using rule 10 (statement -> ID ATT expression TERMINATOR .)
+    RKEY            reduce using rule 10 (statement -> ID ATT expression TERMINATOR .)
+
+
+state 29
+
+    (11) expression -> expression PLUS . expression
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . LPAREN expression RPAREN
+    (16) expression -> . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    LPAREN          shift and go to state 19
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 41
+    term                           shift and go to state 20
+
+state 30
+
+    (12) expression -> expression MINUS . expression
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . LPAREN expression RPAREN
+    (16) expression -> . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    LPAREN          shift and go to state 19
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 42
+    term                           shift and go to state 20
+
+state 31
+
+    (13) expression -> expression TIMES . expression
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . LPAREN expression RPAREN
+    (16) expression -> . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    LPAREN          shift and go to state 19
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 43
+    term                           shift and go to state 20
+
+state 32
+
+    (14) expression -> expression DIVIDE . expression
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . LPAREN expression RPAREN
+    (16) expression -> . term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    LPAREN          shift and go to state 19
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    expression                     shift and go to state 44
+    term                           shift and go to state 20
+
+state 33
+
+    (15) expression -> LPAREN expression . RPAREN
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+
+    RPAREN          shift and go to state 45
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+
+state 34
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY . statement RKEY ELSE LKEY statement RKEY
+    (3) statement -> . IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (8) statement -> . WHILE LPAREN bool RPAREN LKEY statement RKEY
+    (9) statement -> . DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (10) statement -> . ID ATT expression TERMINATOR
+
+    IF              shift and go to state 3
+    WHILE           shift and go to state 4
+    DO              shift and go to state 5
+    ID              shift and go to state 6
+
+    statement                      shift and go to state 46
+
+state 35
+
+    (4) bool -> term LTHAN term .
+
+    RPAREN          reduce using rule 4 (bool -> term LTHAN term .)
+
+
+state 36
+
+    (5) bool -> term GTHAN term .
+
+    RPAREN          reduce using rule 5 (bool -> term GTHAN term .)
+
+
+state 37
+
+    (6) bool -> term LETHAN term .
+
+    RPAREN          reduce using rule 6 (bool -> term LETHAN term .)
+
+
+state 38
+
+    (7) bool -> term GETHAN term .
+
+    RPAREN          reduce using rule 7 (bool -> term GETHAN term .)
+
+
+state 39
+
+    (8) statement -> WHILE LPAREN bool RPAREN LKEY . statement RKEY
+    (3) statement -> . IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (8) statement -> . WHILE LPAREN bool RPAREN LKEY statement RKEY
+    (9) statement -> . DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (10) statement -> . ID ATT expression TERMINATOR
+
+    IF              shift and go to state 3
+    WHILE           shift and go to state 4
+    DO              shift and go to state 5
+    ID              shift and go to state 6
+
+    statement                      shift and go to state 47
+
+state 40
+
+    (9) statement -> DO LKEY statement RKEY WHILE . LPAREN bool RPAREN TERMINATOR
+
+    LPAREN          shift and go to state 48
+
+
+state 41
+
+    (11) expression -> expression PLUS expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    TERMINATOR      reduce using rule 11 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 11 (expression -> expression PLUS expression .)
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+  ! PLUS            [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+  ! MINUS           [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+  ! TIMES           [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+
+
+state 42
+
+    (12) expression -> expression MINUS expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    TERMINATOR      reduce using rule 12 (expression -> expression MINUS expression .)
+    RPAREN          reduce using rule 12 (expression -> expression MINUS expression .)
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+  ! PLUS            [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+  ! MINUS           [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+  ! TIMES           [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+
+
+state 43
+
+    (13) expression -> expression TIMES expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    TERMINATOR      reduce using rule 13 (expression -> expression TIMES expression .)
+    RPAREN          reduce using rule 13 (expression -> expression TIMES expression .)
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+  ! PLUS            [ reduce using rule 13 (expression -> expression TIMES expression .) ]
+  ! MINUS           [ reduce using rule 13 (expression -> expression TIMES expression .) ]
+  ! TIMES           [ reduce using rule 13 (expression -> expression TIMES expression .) ]
+  ! DIVIDE          [ reduce using rule 13 (expression -> expression TIMES expression .) ]
+
+
+state 44
+
+    (14) expression -> expression DIVIDE expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    TERMINATOR      reduce using rule 14 (expression -> expression DIVIDE expression .)
+    RPAREN          reduce using rule 14 (expression -> expression DIVIDE expression .)
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+  ! PLUS            [ reduce using rule 14 (expression -> expression DIVIDE expression .) ]
+  ! MINUS           [ reduce using rule 14 (expression -> expression DIVIDE expression .) ]
+  ! TIMES           [ reduce using rule 14 (expression -> expression DIVIDE expression .) ]
+  ! DIVIDE          [ reduce using rule 14 (expression -> expression DIVIDE expression .) ]
+
+
+state 45
+
+    (15) expression -> LPAREN expression RPAREN .
+
+    TERMINATOR      reduce using rule 15 (expression -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 15 (expression -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 15 (expression -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 15 (expression -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 15 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 15 (expression -> LPAREN expression RPAREN .)
+
+
+state 46
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY statement . RKEY ELSE LKEY statement RKEY
+
+    RKEY            shift and go to state 49
+
+
+state 47
+
+    (8) statement -> WHILE LPAREN bool RPAREN LKEY statement . RKEY
+
+    RKEY            shift and go to state 50
+
+
+state 48
+
+    (9) statement -> DO LKEY statement RKEY WHILE LPAREN . bool RPAREN TERMINATOR
+    (4) bool -> . term LTHAN term
+    (5) bool -> . term GTHAN term
+    (6) bool -> . term LETHAN term
+    (7) bool -> . term GETHAN term
+    (17) term -> . NUMBER
+    (18) term -> . ID
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 15
+
+    bool                           shift and go to state 51
+    term                           shift and go to state 13
+
+state 49
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY statement RKEY . ELSE LKEY statement RKEY
+
+    ELSE            shift and go to state 52
+
+
+state 50
+
+    (8) statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .
+
+    IF              reduce using rule 8 (statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .)
+    WHILE           reduce using rule 8 (statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .)
+    DO              reduce using rule 8 (statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .)
+    ID              reduce using rule 8 (statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .)
+    $end            reduce using rule 8 (statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .)
+    RKEY            reduce using rule 8 (statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY .)
+
+
+state 51
+
+    (9) statement -> DO LKEY statement RKEY WHILE LPAREN bool . RPAREN TERMINATOR
+
+    RPAREN          shift and go to state 53
+
+
+state 52
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE . LKEY statement RKEY
+
+    LKEY            shift and go to state 54
+
+
+state 53
+
+    (9) statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN . TERMINATOR
+
+    TERMINATOR      shift and go to state 55
+
+
+state 54
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY . statement RKEY
+    (3) statement -> . IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY
+    (8) statement -> . WHILE LPAREN bool RPAREN LKEY statement RKEY
+    (9) statement -> . DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR
+    (10) statement -> . ID ATT expression TERMINATOR
+
+    IF              shift and go to state 3
+    WHILE           shift and go to state 4
+    DO              shift and go to state 5
+    ID              shift and go to state 6
+
+    statement                      shift and go to state 56
+
+state 55
+
+    (9) statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .
+
+    IF              reduce using rule 9 (statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .)
+    WHILE           reduce using rule 9 (statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .)
+    DO              reduce using rule 9 (statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .)
+    ID              reduce using rule 9 (statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .)
+    $end            reduce using rule 9 (statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .)
+    RKEY            reduce using rule 9 (statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR .)
+
+
+state 56
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement . RKEY
+
+    RKEY            shift and go to state 57
+
+
+state 57
+
+    (3) statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .
+
+    IF              reduce using rule 3 (statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .)
+    WHILE           reduce using rule 3 (statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .)
+    DO              reduce using rule 3 (statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .)
+    ID              reduce using rule 3 (statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .)
+    $end            reduce using rule 3 (statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .)
+    RKEY            reduce using rule 3 (statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 41 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 41 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 41 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 41 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 42 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 42 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 42 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 42 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 43 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 43 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 43 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 43 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 44 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 44 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 44 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 44 resolved as shift

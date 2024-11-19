@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIVIDE DO ELSE ID IF LPAREN MINUS NUMBER PLUS PRINT RPAREN TIMES WHILEexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : NUMBERfactor : LPAREN expression RPAREN'
+_lr_signature = 'ATT DIVIDE DO ELSE GETHAN GTHAN ID IF LETHAN LKEY LPAREN LTHAN MINUS NUMBER PLUS RKEY RPAREN TERMINATOR TIMES WHILEstart : statement\n             | start statement\n             \n             statement : IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEYbool : term LTHAN term\n            | term GTHAN term\n            | term LETHAN term\n            | term GETHAN termstatement : WHILE LPAREN bool RPAREN LKEY statement RKEY\n                 statement : DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATORstatement : ID ATT expression TERMINATORexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  expression : LPAREN expression RPARENexpression : termterm : NUMBER \n            | ID'
     
-_lr_action_items = {'NUMBER':([0,5,6,7,8,9,],[4,4,4,4,4,4,]),'LPAREN':([0,5,6,7,8,9,],[5,5,5,5,5,5,]),'$end':([1,2,3,4,11,12,13,14,15,],[0,-3,-6,-7,-1,-2,-4,-5,-8,]),'PLUS':([1,2,3,4,10,11,12,13,14,15,],[6,-3,-6,-7,6,-1,-2,-4,-5,-8,]),'MINUS':([1,2,3,4,10,11,12,13,14,15,],[7,-3,-6,-7,7,-1,-2,-4,-5,-8,]),'RPAREN':([2,3,4,10,11,12,13,14,15,],[-3,-6,-7,15,-1,-2,-4,-5,-8,]),'TIMES':([2,3,4,11,12,13,14,15,],[8,-6,-7,8,8,-4,-5,-8,]),'DIVIDE':([2,3,4,11,12,13,14,15,],[9,-6,-7,9,9,-4,-5,-8,]),}
+_lr_action_items = {'IF':([0,1,2,7,10,28,34,39,50,54,55,57,],[3,3,-1,-2,3,-10,3,3,-8,3,-9,-3,]),'WHILE':([0,1,2,7,10,27,28,34,39,50,54,55,57,],[4,4,-1,-2,4,40,-10,4,4,-8,4,-9,-3,]),'DO':([0,1,2,7,10,28,34,39,50,54,55,57,],[5,5,-1,-2,5,-10,5,5,-8,5,-9,-3,]),'ID':([0,1,2,7,8,9,10,11,19,22,23,24,25,28,29,30,31,32,34,39,48,50,54,55,57,],[6,6,-1,-2,15,15,6,15,15,15,15,15,15,-10,15,15,15,15,6,6,15,-8,6,-9,-3,]),'$end':([1,2,7,28,50,55,57,],[0,-1,-2,-10,-8,-9,-3,]),'LPAREN':([3,4,11,19,29,30,31,32,40,],[8,9,19,19,19,19,19,19,48,]),'LKEY':([5,21,26,52,],[10,34,39,54,]),'ATT':([6,],[11,]),'NUMBER':([8,9,11,19,22,23,24,25,29,30,31,32,48,],[14,14,14,14,14,14,14,14,14,14,14,14,14,]),'RPAREN':([12,14,15,16,20,33,35,36,37,38,41,42,43,44,45,51,],[21,-17,-18,26,-16,45,-4,-5,-6,-7,-11,-12,-13,-14,-15,53,]),'LTHAN':([13,14,15,],[22,-17,-18,]),'GTHAN':([13,14,15,],[23,-17,-18,]),'LETHAN':([13,14,15,],[24,-17,-18,]),'GETHAN':([13,14,15,],[25,-17,-18,]),'TERMINATOR':([14,15,18,20,41,42,43,44,45,53,],[-17,-18,28,-16,-11,-12,-13,-14,-15,55,]),'PLUS':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,29,-16,29,29,29,29,29,-15,]),'MINUS':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,30,-16,30,30,30,30,30,-15,]),'TIMES':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,31,-16,31,31,31,31,31,-15,]),'DIVIDE':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,32,-16,32,32,32,32,32,-15,]),'RKEY':([17,28,46,47,50,55,56,57,],[27,-10,49,50,-8,-9,57,-3,]),'ELSE':([49,],[52,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,5,],[1,10,]),'term':([0,5,6,7,],[2,2,11,12,]),'factor':([0,5,6,7,8,9,],[3,3,3,3,13,14,]),}
+_lr_goto_items = {'start':([0,],[1,]),'statement':([0,1,10,34,39,54,],[2,7,17,46,47,56,]),'bool':([8,9,48,],[12,16,51,]),'term':([8,9,11,19,22,23,24,25,29,30,31,32,48,],[13,13,20,20,35,36,37,38,20,20,20,20,13,]),'expression':([11,19,29,30,31,32,],[18,33,41,42,43,44,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,13 +26,23 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> expression","S'",1,None,None,None),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','yacc.py',7),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','yacc.py',11),
-  ('expression -> term','expression',1,'p_expression_term','yacc.py',15),
-  ('term -> term TIMES factor','term',3,'p_term_times','yacc.py',19),
-  ('term -> term DIVIDE factor','term',3,'p_term_divide','yacc.py',23),
-  ('term -> factor','term',1,'p_term_factor','yacc.py',27),
-  ('factor -> NUMBER','factor',1,'p_factor_num','yacc.py',31),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','yacc.py',35),
+  ("S' -> start","S'",1,None,None,None),
+  ('start -> statement','start',1,'p_start','yacc.py',10),
+  ('start -> start statement','start',2,'p_start','yacc.py',11),
+  ('statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY','statement',11,'p_statement_bool','yacc.py',18),
+  ('bool -> term LTHAN term','bool',3,'p_bool_expresion','yacc.py',22),
+  ('bool -> term GTHAN term','bool',3,'p_bool_expresion','yacc.py',23),
+  ('bool -> term LETHAN term','bool',3,'p_bool_expresion','yacc.py',24),
+  ('bool -> term GETHAN term','bool',3,'p_bool_expresion','yacc.py',25),
+  ('statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY','statement',7,'p_statement_while','yacc.py',37),
+  ('statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR','statement',9,'p_statement_dowhile','yacc.py',42),
+  ('statement -> ID ATT expression TERMINATOR','statement',4,'p_statement_expression','yacc.py',46),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_bop','yacc.py',50),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_bop','yacc.py',51),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_bop','yacc.py',52),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_bop','yacc.py',53),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','yacc.py',58),
+  ('expression -> term','expression',1,'p_expression_num','yacc.py',63),
+  ('term -> NUMBER','term',1,'p_term_numid','yacc.py',67),
+  ('term -> ID','term',1,'p_term_numid','yacc.py',68),
 ]

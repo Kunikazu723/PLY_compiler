@@ -3,16 +3,16 @@ import ply.lex as lex
 # Reserved words
 reserved = {
     'perguntei?' : 'IF',
-    'fodase?' : 'ELSE',
-    'nãogrita' : 'WHILE',
-    'bobesponja' : 'PRINT',
+    'emole' : 'ELSE',
+    'naogrita' : 'WHILE',
+    # 'bobesponja' : 'PRINT',
     'grite' : 'DO'
 }
 
 # List of token names.
 tokens = [
     'ID',
-    #'ATT',
+    'ATT',
     'NUMBER',
     'PLUS',
     'MINUS',
@@ -20,19 +20,18 @@ tokens = [
     'DIVIDE',
     'LPAREN',
     'RPAREN',
-    #'LKEY',
-    #'RKEY',
-    #'TERMINATOR',
-    #'GTHAN',
-    #'LTHAN',
-    #'GETHAN',
-    #'LETHAN',
+    'LKEY',
+    'RKEY',
+    'TERMINATOR',
+    'GTHAN',
+    'LTHAN',
+    'GETHAN',
+    'LETHAN',
 ] + list(reserved.values())
 
 
 # Rules using regEx for simple tokens.
-#t_ATT = r'='
-# t_ID = r'[a-z_]+\d*'
+t_ATT = r'='
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
@@ -41,17 +40,17 @@ t_DIVIDE = r'/'
 # Separators
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-#t_LKEY = r'\{'
-#t_RKEY = r'\}'
+t_LKEY = r'\{'
+t_RKEY = r'\}'
 
 # End of sentence
-#t_TERMINATOR  = r';'
+t_TERMINATOR  = r';'
 
 # Conditionals
-#t_GTHAN = r'>'
-#t_LTHAN = r'<'
-#t_GETHAN = r'>='
-#t_LETHAN = r'<='
+t_GTHAN = r'>'
+t_LTHAN = r'<'
+t_GETHAN = r'>='
+t_LETHAN = r'<='
 
 
 # Regex rule for with some action code.
@@ -65,12 +64,12 @@ def t_IF(t):
     return t
 
 def t_ELSE(t):
-    r"""fodase?"""
+    r"""emole"""
     t.type = reserved.get(t.value)
     return t
 
 def t_WHILE(t):
-    r"""nãogrita"""
+    r"""naogrita"""
     t.type = reserved.get(t.value)
     return t
 
@@ -101,6 +100,7 @@ t_ignore = ' \t'
 
 # Error handling rule
 def t_error(t):
+    
     print(f"Caractere ilegal: {t.value[0]}\n\tlinha {t.lineno} posição {t.lexpos}")
 
     t.lexer.skip(1)
@@ -109,14 +109,14 @@ def t_error(t):
 lexer = lex.lex()
 
 # Input to feed the lexer
-data = '''
-perguntei?muito perguntei? 
-'''
-lexer.input(data)
+# data = '''
+# perguntei?muito perguntei? 
+# '''
+# lexer.input(data)
 
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break # No more input
-    print(tok)
+# # Tokenize
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break # No more input
+#     print(tok)

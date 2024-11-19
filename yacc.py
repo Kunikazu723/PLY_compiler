@@ -3,52 +3,72 @@ from jinja2.nodes import Break
 
 from lexer import tokens
 
+with open('example_scripts/basic.txt', 'r') as f:
+    data = f.read()
+
 # Context-Free Grammar definition.
-def p_expression_plus(p):
-    """expression : expression PLUS term"""
-    p[0] = p[1] + p[3]
+def p_start(p) :
+    """start : statement
+             | start statement
+             
+             """
+    p[0] = p[1:]
 
-def p_expression_minus(p):
-    """expression : expression MINUS term"""
-    p[0] = p[1] - p[3]
+# For boolean statements and operators
+def p_statement_bool(p):
+    """statement : IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY"""
+    p[0] = ('if', p[3], p[6],'else',p[10])
 
-def p_expression_term(p):
+def p_bool_expresion(p):
+    """bool : term LTHAN term
+            | term GTHAN term
+            | term LETHAN term
+            | term GETHAN term"""
+    p[0]  = (p[1], p[2], p[3])
+
+# Loops
+def p_statement_while(p):
+    """statement : WHILE LPAREN bool RPAREN LKEY statement RKEY
+                 """
+    p[0] = ('while', p[3], p[6])
+
+def p_statement_dowhile(p):
+    """statement : DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR"""
+
+# Variable assigning and binary operations
+def p_statement_expression(p):
+    """statement : ID ATT expression TERMINATOR"""
+    p[0] = (p[1], p[3])
+    
+def p_expression_bop(p):
+    """expression : expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression
+                  """
+    p[0] = (p[1], p[2], p[3])
+
+def p_expression_group(p):
+    """expression : LPAREN expression RPAREN"""
+    p[0] = p[2]
+
+# Terminator
+def p_expression_num(p):
     """expression : term"""
     p[0] = p[1]
 
-def p_term_times(p):
-    """term : term TIMES factor"""
-    p[0] = p[1] * p[3]
-
-def p_term_divide(p):
-    """term : term DIVIDE factor"""
-    p[0] = p[1] / p[3]
-
-def p_term_factor(p):
-    """term : factor"""
+def p_term_numid(p):
+    """term : NUMBER 
+            | ID"""
     p[0] = p[1]
-
-def p_factor_num(p):
-    """factor : NUMBER"""
-    p[0] = p[1]
-
-def p_factor_expr(p):
-    """factor : LPAREN expression RPAREN"""
-    p[0] = p[2]
 
 # Error rule for syntax errors
 def p_error(p):
-    print(f'Syntax error has occurred')
+    linhas = data.splitlines()
+    print(f'Erro de sintaxe na linha {p.lineno - 1} -> {linhas[p.lineno - 2]}')
 
 # Build parser
 parser = yacc.yacc()
 
-# Receiving and parsing the input given by the user in a CLI
-while True:
-    try:
-        s = input('calc > ')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
-    print(result)
+
+print(parser.parse(data))
