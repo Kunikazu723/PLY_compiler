@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ATT DIVIDE DO ELSE GETHAN GTHAN ID IF LETHAN LKEY LPAREN LTHAN MINUS NUMBER PLUS RKEY RPAREN TERMINATOR TIMES WHILEstart : statement\n             | start statement\n             \n             statement : IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEYbool : term LTHAN term\n            | term GTHAN term\n            | term LETHAN term\n            | term GETHAN termstatement : WHILE LPAREN bool RPAREN LKEY statement RKEY\n                 statement : DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATORstatement : ID ATT expression TERMINATORexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  expression : LPAREN expression RPARENexpression : termterm : NUMBER \n            | ID'
+_lr_signature = 'ATT DIVIDE DO ELSE EQUAL GETHAN GTHAN ID IF LETHAN LKEY LPAREN LTHAN MINUS NUMBER PLUS PRINT RKEY RPAREN TERMINATOR TIMES WHILEstart : statement\n             | start statement             \n             statement : IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEYbool : term LTHAN term\n            | term GTHAN term\n            | term LETHAN term\n            | term GETHAN term\n            | term EQUAL termstatement : WHILE LPAREN bool RPAREN LKEY statement RKEY\n                 statement : DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATORstatement : ID ATT expression TERMINATOR\n                 | ID ATT bool TERMINATORstatement : PRINT LPAREN expression RPAREN TERMINATORexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  expression : LPAREN expression RPARENexpression : termterm : NUMBER \n            | ID'
     
-_lr_action_items = {'IF':([0,1,2,7,10,28,34,39,50,54,55,57,],[3,3,-1,-2,3,-10,3,3,-8,3,-9,-3,]),'WHILE':([0,1,2,7,10,27,28,34,39,50,54,55,57,],[4,4,-1,-2,4,40,-10,4,4,-8,4,-9,-3,]),'DO':([0,1,2,7,10,28,34,39,50,54,55,57,],[5,5,-1,-2,5,-10,5,5,-8,5,-9,-3,]),'ID':([0,1,2,7,8,9,10,11,19,22,23,24,25,28,29,30,31,32,34,39,48,50,54,55,57,],[6,6,-1,-2,15,15,6,15,15,15,15,15,15,-10,15,15,15,15,6,6,15,-8,6,-9,-3,]),'$end':([1,2,7,28,50,55,57,],[0,-1,-2,-10,-8,-9,-3,]),'LPAREN':([3,4,11,19,29,30,31,32,40,],[8,9,19,19,19,19,19,19,48,]),'LKEY':([5,21,26,52,],[10,34,39,54,]),'ATT':([6,],[11,]),'NUMBER':([8,9,11,19,22,23,24,25,29,30,31,32,48,],[14,14,14,14,14,14,14,14,14,14,14,14,14,]),'RPAREN':([12,14,15,16,20,33,35,36,37,38,41,42,43,44,45,51,],[21,-17,-18,26,-16,45,-4,-5,-6,-7,-11,-12,-13,-14,-15,53,]),'LTHAN':([13,14,15,],[22,-17,-18,]),'GTHAN':([13,14,15,],[23,-17,-18,]),'LETHAN':([13,14,15,],[24,-17,-18,]),'GETHAN':([13,14,15,],[25,-17,-18,]),'TERMINATOR':([14,15,18,20,41,42,43,44,45,53,],[-17,-18,28,-16,-11,-12,-13,-14,-15,55,]),'PLUS':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,29,-16,29,29,29,29,29,-15,]),'MINUS':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,30,-16,30,30,30,30,30,-15,]),'TIMES':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,31,-16,31,31,31,31,31,-15,]),'DIVIDE':([14,15,18,20,33,41,42,43,44,45,],[-17,-18,32,-16,32,32,32,32,32,-15,]),'RKEY':([17,28,46,47,50,55,56,57,],[27,-10,49,50,-8,-9,57,-3,]),'ELSE':([49,],[52,]),}
+_lr_action_items = {'IF':([0,1,2,8,11,34,39,42,48,55,60,64,65,67,],[3,3,-1,-2,3,-11,-12,3,3,-13,-9,3,-10,-3,]),'WHILE':([0,1,2,8,11,33,34,39,42,48,55,60,64,65,67,],[4,4,-1,-2,4,49,-11,-12,4,4,-13,-9,4,-10,-3,]),'DO':([0,1,2,8,11,34,39,42,48,55,60,64,65,67,],[5,5,-1,-2,5,-11,-12,5,5,-13,-9,5,-10,-3,]),'ID':([0,1,2,8,9,10,11,12,13,22,27,28,29,30,31,34,35,36,37,38,39,42,48,55,58,60,64,65,67,],[6,6,-1,-2,17,17,6,17,17,17,17,17,17,17,17,-11,17,17,17,17,-12,6,6,-13,17,-9,6,-10,-3,]),'PRINT':([0,1,2,8,11,34,39,42,48,55,60,64,65,67,],[7,7,-1,-2,7,-11,-12,7,7,-13,-9,7,-10,-3,]),'$end':([1,2,8,34,39,55,60,65,67,],[0,-1,-2,-11,-12,-13,-9,-10,-3,]),'LPAREN':([3,4,7,12,13,22,35,36,37,38,49,],[9,10,13,22,22,22,22,22,22,22,58,]),'LKEY':([5,26,32,62,],[11,42,48,64,]),'ATT':([6,],[12,]),'NUMBER':([9,10,12,13,22,27,28,29,30,31,35,36,37,38,58,],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,]),'RPAREN':([14,16,17,18,24,25,40,43,44,45,46,47,50,51,52,53,54,61,],[26,-20,-21,32,41,-19,54,-4,-5,-6,-7,-8,-14,-15,-16,-17,-18,63,]),'LTHAN':([15,16,17,23,],[27,-20,-21,27,]),'GTHAN':([15,16,17,23,],[28,-20,-21,28,]),'LETHAN':([15,16,17,23,],[29,-20,-21,29,]),'GETHAN':([15,16,17,23,],[30,-20,-21,30,]),'EQUAL':([15,16,17,23,],[31,-20,-21,31,]),'TERMINATOR':([16,17,20,21,23,25,41,43,44,45,46,47,50,51,52,53,54,63,],[-20,-21,34,39,-19,-19,55,-4,-5,-6,-7,-8,-14,-15,-16,-17,-18,65,]),'PLUS':([16,17,20,23,24,25,40,50,51,52,53,54,],[-20,-21,35,-19,35,-19,35,35,35,35,35,-18,]),'MINUS':([16,17,20,23,24,25,40,50,51,52,53,54,],[-20,-21,36,-19,36,-19,36,36,36,36,36,-18,]),'TIMES':([16,17,20,23,24,25,40,50,51,52,53,54,],[-20,-21,37,-19,37,-19,37,37,37,37,37,-18,]),'DIVIDE':([16,17,20,23,24,25,40,50,51,52,53,54,],[-20,-21,38,-19,38,-19,38,38,38,38,38,-18,]),'RKEY':([19,34,39,55,56,57,60,65,66,67,],[33,-11,-12,-13,59,60,-9,-10,67,-3,]),'ELSE':([59,],[62,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'start':([0,],[1,]),'statement':([0,1,10,34,39,54,],[2,7,17,46,47,56,]),'bool':([8,9,48,],[12,16,51,]),'term':([8,9,11,19,22,23,24,25,29,30,31,32,48,],[13,13,20,20,35,36,37,38,20,20,20,20,13,]),'expression':([11,19,29,30,31,32,],[18,33,41,42,43,44,]),}
+_lr_goto_items = {'start':([0,],[1,]),'statement':([0,1,11,42,48,64,],[2,8,19,56,57,66,]),'bool':([9,10,12,58,],[14,18,21,61,]),'term':([9,10,12,13,22,27,28,29,30,31,35,36,37,38,58,],[15,15,23,25,25,43,44,45,46,47,25,25,25,25,15,]),'expression':([12,13,22,35,36,37,38,],[20,24,40,50,51,52,53,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,16 +27,19 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> start","S'",1,None,None,None),
-  ('start -> statement','start',1,'p_start','yacc.py',10),
-  ('start -> start statement','start',2,'p_start','yacc.py',11),
+  ('start -> statement','start',1,'p_start','yacc.py',11),
+  ('start -> start statement','start',2,'p_start','yacc.py',12),
   ('statement -> IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY','statement',11,'p_statement_bool','yacc.py',18),
   ('bool -> term LTHAN term','bool',3,'p_bool_expresion','yacc.py',22),
   ('bool -> term GTHAN term','bool',3,'p_bool_expresion','yacc.py',23),
   ('bool -> term LETHAN term','bool',3,'p_bool_expresion','yacc.py',24),
   ('bool -> term GETHAN term','bool',3,'p_bool_expresion','yacc.py',25),
-  ('statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY','statement',7,'p_statement_while','yacc.py',37),
-  ('statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR','statement',9,'p_statement_dowhile','yacc.py',42),
-  ('statement -> ID ATT expression TERMINATOR','statement',4,'p_statement_expression','yacc.py',46),
+  ('bool -> term EQUAL term','bool',3,'p_bool_expresion','yacc.py',26),
+  ('statement -> WHILE LPAREN bool RPAREN LKEY statement RKEY','statement',7,'p_statement_while','yacc.py',32),
+  ('statement -> DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR','statement',9,'p_statement_dowhile','yacc.py',37),
+  ('statement -> ID ATT expression TERMINATOR','statement',4,'p_statement_expression','yacc.py',41),
+  ('statement -> ID ATT bool TERMINATOR','statement',4,'p_statement_expression','yacc.py',42),
+  ('statement -> PRINT LPAREN expression RPAREN TERMINATOR','statement',5,'p_statement_print','yacc.py',46),
   ('expression -> expression PLUS expression','expression',3,'p_expression_bop','yacc.py',50),
   ('expression -> expression MINUS expression','expression',3,'p_expression_bop','yacc.py',51),
   ('expression -> expression TIMES expression','expression',3,'p_expression_bop','yacc.py',52),

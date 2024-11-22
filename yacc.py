@@ -9,8 +9,7 @@ with open('example_scripts/basic.txt', 'r') as f:
 # Context-Free Grammar definition.
 def p_start(p) :
     """start : statement
-             | start statement
-             
+             | start statement             
              """
     p[0] = p[1:]
 
@@ -23,7 +22,9 @@ def p_bool_expresion(p):
     """bool : term LTHAN term
             | term GTHAN term
             | term LETHAN term
-            | term GETHAN term"""
+            | term GETHAN term
+            | term EQUAL term"""
+            
     p[0]  = (p[1], p[2], p[3])
 
 # Loops
@@ -37,9 +38,14 @@ def p_statement_dowhile(p):
 
 # Variable assigning and binary operations
 def p_statement_expression(p):
-    """statement : ID ATT expression TERMINATOR"""
+    """statement : ID ATT expression TERMINATOR
+                 | ID ATT bool TERMINATOR"""
     p[0] = (p[1], p[3])
-    
+
+def p_statement_print(p):
+    """statement : PRINT LPAREN expression RPAREN TERMINATOR"""
+    p[0] = ('print', p[3])
+
 def p_expression_bop(p):
     """expression : expression PLUS expression
                   | expression MINUS expression
@@ -64,11 +70,18 @@ def p_term_numid(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    linhas = data.splitlines()
-    print(f'Erro de sintaxe na linha {p.lineno - 1} -> {linhas[p.lineno - 2]}')
+    if p:
+         print(f"Syntax error at token {p.type} line {p.lineno}")
+         parser.errok()
+    else:
+         print("Syntax error at EOF")
+
 
 # Build parser
 parser = yacc.yacc()
 
-
-print(parser.parse(data))
+info = parser.parse(data)
+if info :
+    print('Código ok!!')
+else:
+    print(info)

@@ -5,7 +5,7 @@ reserved = {
     'perguntei?' : 'IF',
     'emole' : 'ELSE',
     'naogrita' : 'WHILE',
-    # 'bobesponja' : 'PRINT',
+    'bobesponja' : 'PRINT',
     'grite' : 'DO'
 }
 
@@ -17,7 +17,7 @@ tokens = [
     'PLUS',
     'MINUS',
     'TIMES',
-    'DIVIDE',
+    'DIVIDE', 
     'LPAREN',
     'RPAREN',
     'LKEY',
@@ -27,6 +27,7 @@ tokens = [
     'LTHAN',
     'GETHAN',
     'LETHAN',
+    'EQUAL'
 ] + list(reserved.values())
 
 
@@ -58,6 +59,7 @@ def t_NUMBER(t):
     r"""\d+"""
     t.value = int(t.value)
     return t
+
 def t_IF(t):
     r"""perguntei\?"""
     t.type = reserved.get(t.value)
@@ -100,23 +102,9 @@ t_ignore = ' \t'
 
 # Error handling rule
 def t_error(t):
-    
-    print(f"Caractere ilegal: {t.value[0]}\n\tlinha {t.lineno} posição {t.lexpos}")
+    print(f"Caractere ilegal: {t.value[0]}\n\tlinha {t.lineno} posição {t.lexpos} token {t.type}")
 
     t.lexer.skip(1)
 
 # Build the lexer
 lexer = lex.lex()
-
-# Input to feed the lexer
-# data = '''
-# perguntei?muito perguntei? 
-# '''
-# lexer.input(data)
-
-# # Tokenize
-# while True:
-#     tok = lexer.token()
-#     if not tok:
-#         break # No more input
-#     print(tok)
