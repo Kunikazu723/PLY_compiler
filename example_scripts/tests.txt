@@ -1,0 +1,7 @@
+n = 1;
+perguntei? (n < 10) {
+    n = n + 10;
+} emole {
+    n = 0;
+}
+bobesponja(n);

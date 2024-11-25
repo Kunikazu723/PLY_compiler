@@ -1,0 +1,6 @@
+n = 10;
+perguntei? (n < 20) {
+    n = 20;
+} emole {
+    n = n;
+}

@@ -1,8 +1,8 @@
 if -> perguntei?
-else -> émole
+else -> emole
 = -> receba
 while = nãogrita
 ; -> ;
-do -> pedro
+do -> grite
 print -> bobesponja
 

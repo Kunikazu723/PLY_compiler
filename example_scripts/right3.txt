@@ -1,0 +1,5 @@
+numero1 = 2;
+numero2 = 2+numero1;
+naogrita (numero1 < numero2) {
+    numero1 = numero1 + 1;
+}

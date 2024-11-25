@@ -1,0 +1,6 @@
+a = 1;
+b = 10;
+grite {
+    a = a + 1;
+    bobesponja(a + );
+} naogrita (a < b);

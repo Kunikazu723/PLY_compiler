@@ -1,10 +1,9 @@
 import ply.yacc as yacc
 from jinja2.nodes import Break
+import sys
 
 from lexer import tokens
 
-with open('example_scripts/basic.txt', 'r') as f:
-    data = f.read()
 
 # Context-Free Grammar definition.
 def p_start(p) :
@@ -13,11 +12,37 @@ def p_start(p) :
              """
     p[0] = p[1:]
 
-# For boolean statements and operators
-def p_statement_bool(p):
-    """statement : IF LPAREN bool RPAREN LKEY statement RKEY ELSE LKEY statement RKEY"""
+# Possible statements
+def p_statements(p):
+    """statement : if
+                 | print
+                 | dowhile
+                 | while
+                 | att"""
+
+# Statement definition
+def p_if(p):
+    """if : IF LPAREN bool RPAREN LKEY start RKEY ELSE LKEY statement RKEY"""
     p[0] = ('if', p[3], p[6],'else',p[10])
 
+def p_dowhile(p):
+    """dowhile : DO LKEY start RKEY WHILE LPAREN bool RPAREN TERMINATOR"""
+    p[0] = ('dowhile',p[3],p[7])
+
+def p_while(p):
+    """while : WHILE LPAREN bool RPAREN LKEY start RKEY"""
+    p[0] = ('while', p[3], p[6])
+
+def p_print(p):
+    """print : PRINT LPAREN expression RPAREN TERMINATOR"""
+    p[0] = ('print', p[3])
+
+def p_statement_expression(p):
+    """att : ID ATT expression TERMINATOR
+                 | ID ATT bool TERMINATOR"""
+    p[0] = (p[1], p[3])
+
+# Binary operations and boolean operations
 def p_bool_expresion(p):
     """bool : term LTHAN term
             | term GTHAN term
@@ -26,25 +51,6 @@ def p_bool_expresion(p):
             | term EQUAL term"""
             
     p[0]  = (p[1], p[2], p[3])
-
-# Loops
-def p_statement_while(p):
-    """statement : WHILE LPAREN bool RPAREN LKEY statement RKEY
-                 """
-    p[0] = ('while', p[3], p[6])
-
-def p_statement_dowhile(p):
-    """statement : DO LKEY statement RKEY WHILE LPAREN bool RPAREN TERMINATOR"""
-
-# Variable assigning and binary operations
-def p_statement_expression(p):
-    """statement : ID ATT expression TERMINATOR
-                 | ID ATT bool TERMINATOR"""
-    p[0] = (p[1], p[3])
-
-def p_statement_print(p):
-    """statement : PRINT LPAREN expression RPAREN TERMINATOR"""
-    p[0] = ('print', p[3])
 
 def p_expression_bop(p):
     """expression : expression PLUS expression
@@ -77,11 +83,17 @@ def p_error(p):
          print("Syntax error at EOF")
 
 
+# Analyse the given file from the cl argument
+path = sys.argv[1]
+
+with open(path, 'r') as f:
+    data = f.read()
 # Build parser
 parser = yacc.yacc()
 
+
 info = parser.parse(data)
 if info :
-    print('Código ok!!')
+    print('Perfect code!!!')
 else:
     print(info)

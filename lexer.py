@@ -47,14 +47,14 @@ t_RKEY = r'\}'
 # End of sentence
 t_TERMINATOR  = r';'
 
-# Conditionals
+# Bool operators
 t_GTHAN = r'>'
 t_LTHAN = r'<'
 t_GETHAN = r'>='
 t_LETHAN = r'<='
 
 
-# Regex rule for with some action code.
+# Regex rules with some action code.
 def t_NUMBER(t):
     r"""\d+"""
     t.value = int(t.value)

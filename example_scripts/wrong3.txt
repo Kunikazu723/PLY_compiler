@@ -1,0 +1,7 @@
+bobesponja(
+    perguntei? (10 > 20) {
+        bobesponja(sim)
+    } emole {
+        bobesponja(nao)
+    }
+);
